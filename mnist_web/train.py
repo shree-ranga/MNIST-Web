@@ -60,10 +60,8 @@ model = Sequential()
 model.add(Conv2D(32, kernel_size=(3,3),
 				 activation='relu',
 				 input_shape=input_shape))
-# layer 2 with 64 filters and 3x3 kernel size
+# layer 2 with 32 filters and 3x3 kernel size
 model.add(Conv2D(32, (3,3), activation='relu'))
-# layer 3 with 64 filters and 3x3 kernel size
-model.add(Conv2D(64, (3,3), activation='relu'))
 # add maxpooling layer
 model.add(MaxPooling2D(pool_size=(2,2)))
 # add dropout layer
@@ -85,7 +83,7 @@ model.compile(loss=keras.losses.categorical_crossentropy,
 model.fit(x_train, y_train,
 	 	  batch_size=batch_size,
 	 	  epochs=epochs,
-	 	  verbose=1,
+	 	  verbose=0,
 	 	  validation_split=0.2)
 
 score = model.evaluate(x_test, y_test, verbose=0)
@@ -95,8 +93,11 @@ print('Test accuracy:', score[1])
 # Save the model
 # model to json
 model_json = model.to_json()
-with open("model.json", "w") as json_file:
+# /output/ coz deployed on floydhub.com gpu
+with open("/output/model.json", "w") as json_file:
 	json_file.write(model_json)
 
 # predicted weights to HDFS format
-model.save_weights("model.h5")
+model.save_weights("/output/model.h5")
+
+# test accuracy = 99.15

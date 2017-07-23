@@ -33,20 +33,20 @@ model, graph = init()
 # route to main page
 @app.route('/')
 def index():
-	return render_template('index.html')
+	return render_template('index2.html')
 
 # when user clicks submit/predict button
 @app.route('/predict/', methods=['GET', 'POST'])
 def predict():
 	# get the image data from the canvas
 	imgData = request.get_data()
-	convertImage(imgData) # comment this when debugging with postman
+	convertImage(imgData) # comment this when debugging with postman for xyz.png
 	# read the data
-	x = imread('out.png', mode='L')
+	x = imread('output.png', mode='L')
 	# invert the image (black to white and viceversa) coz
 	# canvas background is white but models were trained on
 	# black background
-	x = np.invert(x) # comment this part when debugging with postman
+	x = np.invert(x) # comment this part when debugging with postman for xyz.png
 	# resize the image to 28x28 coz that's what the model is trained on
 	x = imresize(x,(28,28))
 	x = x.reshape(1,28,28,1) # This 4D tensor is fed to the model
@@ -60,4 +60,4 @@ def predict():
 
 if __name__ == '__main__':
 	# run the app on 127.0.0.1
-	app.run(debug=True, port=8080)
+	app.run(debug=True, port=8000)
